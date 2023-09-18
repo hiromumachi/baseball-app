@@ -1,26 +1,30 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <v-app>
+    <v-app-bar color="primary">
+      <v-app-bar-title>
+        MLB試合予想アプリ
+      </v-app-bar-title>
+    </v-app-bar>
+    <v-main>
+      <TenserFlow/>
+  
+
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
+import TenserFlow from './components/TenserFlow.vue';
 export default {
   name: 'App',
+
   components: {
-    HelloWorld
-  }
+    TenserFlow,
+  },
+
+  data: () => ({
+    //
+  }),
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
