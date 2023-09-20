@@ -132,7 +132,7 @@ export default {
         const prediction = this.model.predict(normalizedData);
 
         const result = await prediction.data();
-
+        console.log(result);
         // 予測結果に応じて結果を設定
         if (result[0] > 0.5) {
           this.result = 'win';
