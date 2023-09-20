@@ -135,9 +135,9 @@ export default {
         console.log(result);
         // 予測結果に応じて結果を設定
         if (result[0] > 0.5) {
-          this.result = 'win';
+          this.result = this.selectedHomeItem + "勝利!!";
         } else {
-          this.result = 'lose';
+          this.result = this.selectedAwayItem + "勝利!!";
         }
     },
     normalizeInput(inputData, statistics) {
@@ -146,13 +146,7 @@ export default {
         
         const normalizedData = tf.div(tf.sub(inputData, mean), stddev);
 
-        // 1の列を作成
-        const ones = tf.ones([normalizedData.shape[0], 1]);
-
-        // 1の列をデータに追加
-        const inputDataWithOnes = tf.concat([ones, normalizedData], 1);
-
-        return inputDataWithOnes;
+        return normalizedData;
     },
     getDataset() {
      const home=teamData.find((item) => item.pitcherteam === this.selectedHomeItem);
