@@ -69,7 +69,7 @@ import pitchersData from '../assets/pitcher_data.json'
 import teamData from '../assets/teamdata.json'
 import teamHit from '../assets/teamHit.json'
 import teamPitch from '../assets/teamPitch.json'
- 
+import statistics from './assets/statistics.json'; 
 import * as tf from '@tensorflow/tfjs';
 
 import { createModel } from '../../public/app.js';
@@ -98,12 +98,7 @@ export default {
     this.model= await createModel();
     this.modelReady = true;
     this.buttonMessage = '予測する';
-    // async function loadModel() {
-    //   this.model = await tf.loadLayersModel('../public/model.json');
-    //   
-    //   
-    // }
-    // loadModel();
+   
   },
   methods: {
     
@@ -126,53 +121,38 @@ export default {
         this.awaypitchers = []; // AWAYチーム未選択時は空にする
       }
     },
-    scale(value,mean,deviation) {
-      return value.sub(mean).div(deviation);
+    async predict() {
+        const dataset = this.getDataset(); // データセットの取得
+
+        const inputData = tf.tensor2d([dataset]);
+
+        // データの標準化
+        const normalizedData = this.normalizeInput(inputData, statistics);
+
+        const prediction = this.model.predict(normalizedData);
+
+        const result = await prediction.data();
+
+        // 予測結果に応じて結果を設定
+        if (result[0] > 0.5) {
+          this.result = 'win';
+        } else {
+          this.result = 'lose';
+        }
     },
-    unscale(value,mean,deviation) {
-      return value.mul(deviation).add(mean);
-    },
-    preProcessInputs(inputs){
-      let modelInput =tf.tensor1d(inputs)
-      modelInput =this.scale(modelInput,)
-    },
-   async predict() {
-      const dataset = this.getDataset();
-   
-      const inputData = tf.tensor2d([
-        dataset
-        ]);
-        console.log(inputData);
-      const prediction = this.model.predict(this.preProcessInputs(inputData));
+    normalizeInput(inputData, statistics) {
+        const mean = tf.tensor(statistics.mean);
+        const stddev = tf.tensor(statistics.stddev);
+        
+        const normalizedData = tf.div(tf.sub(inputData, mean), stddev);
 
-      const result = await prediction.data(); // データを非同期で取得
-     
-      // 予測結果に応じて結果を設定
-      if (result[0] > 0.5) {
-        this.result = 'win';
-      } else {  
-        this.result = 'lose';
-      }
-    },
-    normalizeInput(inputData) {
-  // 各特徴量ごとの平均を計算
-    const mean = inputData.mean(0);
-    
-    // 各特徴量ごとの標準偏差を計算
-    const std = inputData.sub(mean).square().mean(0).sqrt();
+        // 1の列を作成
+        const ones = tf.ones([normalizedData.shape[0], 1]);
 
-    // 各特徴量の値から平均を引き、標準偏差で割って標準化
-    const normalizedInputData = inputData.sub(mean).div(std);
+        // 1の列をデータに追加
+        const inputDataWithOnes = tf.concat([ones, normalizedData], 1);
 
-    // 1の列を作成
-    const ones = tf.ones([normalizedInputData.shape[0], 1]);
-
-    // 1の列をデータに追加
-    const inputDataWithOnes = tf.concat([ones, normalizedInputData], 1);
-
-    console.log(inputDataWithOnes);
-
-    return inputDataWithOnes;
+        return inputDataWithOnes;
     },
     getDataset() {
      const home=teamData.find((item) => item.pitcherteam === this.selectedHomeItem);
