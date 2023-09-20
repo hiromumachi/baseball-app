@@ -1,6 +1,6 @@
 // Load our saved model from current directory (which will be
 // hosted via Firebase Hosting)
-import * as tf from '@tensorflow/tfjs';
+
 export async function createModel(){
   const model = await tf.loadLayersModel('model.json');
   return model;
