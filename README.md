@@ -1,9 +1,8 @@
 機械学習モデルの練習アプリ
 
 モデル自体の作成はGooglecolabで作成
-先発投手の防御率、WHIP,各チームの打撃の指標としてAVG,OBP,SLG,OPS,投手の指標としてERA,WHIPの平均を特徴量としている。
-ホームゲームを入れると、ほとんどの確率でホームゲーム勝利となってしまうので、外している。
-（理由として0.5以上で勝利としているが、0.50~0.59の間が出ることが多いため）
+Homeゲームか、先発投手の防御率、WHIP,各チームの打撃の指標としてAVG,OBP,SLG,OPS,投手の指標としてERA,WHIPの平均を特徴量としている。
+
 
 
 https://colab.research.google.com/drive/1c09iMYyVO71DL9VHcnOrLi3CxgLIy-F-#scrollTo=AxCLh49kPcEO
