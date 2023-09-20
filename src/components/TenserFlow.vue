@@ -61,6 +61,12 @@
   <v-container align="center">
     <h1>{{ result }}</h1>
   </v-container>
+
+  <v-container align="center">
+    <h2>{{ selectedHomeItem }}:{{ winpercentageHome }}%</h2>
+    <h2>{{ selectedAwayItem }}:{{ winpercentageAway }}%</h2>
+  </v-container>
+
 </template>
 
 
@@ -86,7 +92,8 @@ export default {
     awaypitchers: [],
     result: 'win or lose',
     modelReady: false,
-
+    winpercentageHome: 0,
+    winpercentageAway: 0,
   }),
   watch: {
     selectedHomeItem: 'filterPitchers',
@@ -128,7 +135,7 @@ export default {
 
         // データの標準化
         const normalizedData = this.normalizeInput(inputData, statistics);
-
+  
         const prediction = this.model.predict(normalizedData);
 
         const result = await prediction.data();
@@ -139,6 +146,8 @@ export default {
         } else {
           this.result = this.selectedAwayItem + "勝利!!";
         }
+        this.winpercentageHome = Math.round(result[0] * 100); 
+        this.winpercentageAway = Math.round((1-result[0]) * 100);
     },
     normalizeInput(inputData, statistics) {
         const mean = tf.tensor(statistics.mean);
@@ -146,7 +155,12 @@ export default {
         
         const normalizedData = tf.div(tf.sub(inputData, mean), stddev);
 
-        return normalizedData;
+        // 1の列を作成
+        const ones = tf.ones([normalizedData.shape[0], 1]);
+        // 1の列をデータに追加
+        const inputDataWithOnes = tf.concat([ones, normalizedData], 1);
+        inputDataWithOnes.print();
+        return inputDataWithOnes;
     },
     getDataset() {
      const home=teamData.find((item) => item.pitcherteam === this.selectedHomeItem);
