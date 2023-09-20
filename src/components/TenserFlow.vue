@@ -69,7 +69,7 @@ import pitchersData from '../assets/pitcher_data.json'
 import teamData from '../assets/teamdata.json'
 import teamHit from '../assets/teamHit.json'
 import teamPitch from '../assets/teamPitch.json'
-import statistics from './assets/statistics.json'; 
+import statistics from '../assets/statistics.json'; 
 import * as tf from '@tensorflow/tfjs';
 
 import { createModel } from '../../public/app.js';
