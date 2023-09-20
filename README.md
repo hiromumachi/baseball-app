@@ -1,24 +1,18 @@
-# baseball-app
+機械学習モデルの練習アプリ
 
-## Project setup
-```
-npm install
-```
+モデル自体の作成はGooglecolabで作成
+先発投手の防御率、WHIP,各チームの打撃の指標としてAVG,OBP,SLG,OPS,投手の指標としてERA,WHIPの平均を特徴量としている。
+ホームゲームを入れると、ほとんどの確率でホームゲーム勝利となってしまうので、外している。
+（理由として0.5以上で勝利としているが、0.50~0.59の間が出ることが多いため）
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+https://colab.research.google.com/drive/1c09iMYyVO71DL9VHcnOrLi3CxgLIy-F-#scrollTo=AxCLh49kPcEO
 
-### Lints and fixes files
-```
-npm run lint
-```
+WEBアプリについてはデプロイ済
+firebaseにてホスティングとデプロイを行い、GitHub Actionsで自動化を行った。
+https://baseball-app-fbb26.web.app/
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+アプリ自体はMLBのチームを入れて先発投手を選択すると予想結果が出ます！
+まだ2023年のデータのみのモデルであるのと、モデル選定に時間をかけられていないので正答率は57%セントほどである。
+野球に試合予想においては60%でもかなり高い数値となり70%を超えると評論家以上というデータもあるので
+今後60%となるように特徴量の選定やモデル選定をしていきたい。
