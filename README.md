@@ -21,6 +21,5 @@ https://baseball-app-fbb26.web.app/
 
 
 修正予定
-VSの位置
 名前検索
 データにない先発の場合のメソッド
